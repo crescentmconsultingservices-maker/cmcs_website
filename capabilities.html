@@ -80,35 +80,15 @@
     .delay-400 { transition-delay: 400ms; }
     .delay-500 { transition-delay: 500ms; }
 
-    /* Custom styles for accordion cards */
-    .acc-video-card {
-      transition: flex-grow 0.7s cubic-bezier(0.25, 1, 0.5, 1),
-                  border-color 0.4s ease,
-                  box-shadow 0.4s ease;
-      flex-grow: 1;
+    /* Card Hover Lift & Glow */
+    .cap-card {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.35s ease,
+                  box-shadow 0.35s ease;
     }
-    @media (min-width: 1024px) {
-      .acc-video-card.is-active {
-        flex-grow: 3.4;
-      }
-    }
-    .card-collapsed-view {
-      opacity: 1;
-      transition: opacity 0.35s ease-out;
-      pointer-events: auto;
-    }
-    .card-expanded-view {
-      opacity: 0;
-      transition: opacity 0.5s ease-out 0.15s;
-      pointer-events: none;
-    }
-    .acc-video-card.is-active .card-collapsed-view {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .acc-video-card.is-active .card-expanded-view {
-      opacity: 1;
-      pointer-events: auto;
+    .cap-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 25px -5px rgba(197, 154, 63, 0.15);
     }
   
     @keyframes heroReveal {
@@ -196,11 +176,19 @@
       <div class="h-24 sm:h-28 w-full relative z-20"></div>
 
       <!-- Centered Hero Content -->
-      <div class="relative z-20 max-w-5xl mx-auto w-full px-6 lg:px-12 my-auto py-12 text-center space-y-6">
+      <div class="relative z-20 max-w-5xl mx-auto w-full px-6 lg:px-12 my-auto py-12 sm:py-16 text-center space-y-6">
         
+        <!-- Eyebrow Tag -->
+        <div class="overflow-hidden">
+          <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs sm:text-sm font-semibold uppercase tracking-[0.25em] text-[#C59A3F] drop-shadow-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#C59A3F] animate-pulse"></span>
+            Practice Areas &amp; Capabilities
+          </span>
+        </div>
+
         <!-- Headline (Monumental Playfair Display) -->
         <div class="overflow-hidden py-2 -my-2">
-          <h1 id="hero-title" class="hero-anim-title font-serif text-[52px] sm:text-[72px] lg:text-[92px] leading-[1.05] tracking-[-0.02em] font-normal text-white drop-shadow-md">
+          <h1 id="hero-title" class="hero-anim-title font-serif text-[48px] sm:text-[68px] lg:text-[88px] leading-[1.05] tracking-[-0.02em] font-normal text-white drop-shadow-md">
             What we can do<span class="text-[#C59A3F] inline-block">.</span>
           </h1>
         </div>
@@ -211,319 +199,324 @@
         </p>
 
         <!-- Meta Badges Pill Row -->
-        <div class="hero-anim-badges pt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs sm:text-sm font-medium text-white/85">
-          <span class="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/90"><strong class="font-bold text-white">6</strong> Practice Areas</span>
-          <span class="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/90">Zero-Trust Cyber Defense</span>
-          <span class="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/90">Multi-Cloud Modernization</span>
-          <span class="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/90">Mission-Critical Architecture</span>
+        <div class="hero-anim-badges pt-2 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs sm:text-sm font-medium text-white/85">
+          <span class="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/90"><strong class="font-bold text-white">6</strong> Dedicated Disciplines</span>
+          <span class="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/90">Zero-Trust Security</span>
+          <span class="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/90">Multi-Cloud Resilience</span>
+          <span class="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white/90">Production Systems</span>
         </div>
 
       </div>
 
       <!-- Subtle Bottom Gradient Dissolve into Section 2 -->
-      <div class="absolute -bottom-[2px] left-0 right-0 h-16 sm:h-20 lg:h-24 bg-gradient-to-b from-[#0F1C2D]/0 via-[#0F1C2D]/50 to-[#0F1C2D] pointer-events-none z-20"></div>
+      <div class="absolute -bottom-[2px] left-0 right-0 h-16 sm:h-20 lg:h-24 bg-gradient-to-b from-[#0F1C2D]/0 via-[#0F1C2D]/60 to-[#0F1C2D] pointer-events-none z-20"></div>
 
     </section>
 
-<!-- =========================================================================
-         SECTION 2: 6 EXPANDING ACCORDION CARDS SHOWCASE
+    <!-- =========================================================================
+         SECTION 2: 6 PRACTICE AREAS (UNIFORM 3x2 BALANCED GRID)
+         Clean, equal-height, fully readable cards with visual depth
          ========================================================================= -->
-    <section class="relative w-full py-8 lg:py-12">
-      <div class="max-w-[1600px] 2xl:max-w-[1750px] mx-auto px-6 sm:px-12 lg:px-20 xl:px-24 space-y-6 lg:space-y-8">
+    <section class="relative w-full py-12 sm:py-16 lg:py-20 bg-[#0F1C2D] border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 space-y-12">
+        
+        <!-- Section Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 fade-slow border-b border-white/10 pb-8">
+          <div class="space-y-3 max-w-2xl">
+            <span class="text-xs font-semibold uppercase tracking-[0.2em] text-[#C59A3F]">
+              Engineering Disciplines
+            </span>
+            <h2 class="font-serif text-3xl sm:text-4xl lg:text-[40px] font-normal text-white tracking-tight leading-tight">
+              Six core practices engineered for operational endurance.
+            </h2>
+          </div>
+          <p class="text-sm sm:text-base text-slate-300 max-w-md font-normal leading-relaxed">
+            Every capability is led by seasoned practitioners with decade-long enterprise track records, delivering mission-critical reliability.
+          </p>
+        </div>
 
-        <!-- ROW 1 (Cards 01, 02, 03) -->
-        <div class="acc-video-row flex flex-col lg:flex-row gap-5 lg:gap-6 lg:h-[350px]">
+        <!-- 6-Card Uniform Grid (3 columns on desktop, 2 on tablet, 1 on mobile) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
 
-          <!-- Card 01: Cyber Security & Risk Management (Default Active in Row 1) -->
-          <div class="acc-video-card is-active relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/50 shadow-xl overflow-hidden cursor-pointer p-6 lg:p-7 flex flex-col justify-between"
-            data-index="0">
-            <div class="absolute -right-8 -bottom-8 w-48 h-48 rounded-full bg-[#C59A3F]/10 blur-2xl pointer-events-none"></div>
+          <!-- Card 01: Cyber Security & Risk Defense -->
+          <div class="fade-slow delay-100 cap-card group relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/60 shadow-xl overflow-hidden p-6 sm:p-7 flex flex-col justify-between">
+            <div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-[#C59A3F]/10 blur-3xl pointer-events-none group-hover:bg-[#C59A3F]/20 transition-all duration-500"></div>
 
-            <!-- Collapsed State -->
-            <div class="card-collapsed-view absolute inset-0 p-6 lg:p-7 flex flex-col justify-between z-10">
-              <h3 class="text-xl font-bold text-white tracking-tight leading-snug">
-                Cyber Security &amp; Risk Defense
-              </h3>
-              <div class="flex items-center justify-between pt-4">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Read More</span>
-                <div class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white">
-                  <span class="material-symbols-outlined text-[18px]">north_east</span>
+            <div class="space-y-5">
+              <!-- Visual Image Container -->
+              <div class="relative w-full h-48 sm:h-52 rounded-xl overflow-hidden border border-white/10 shadow-inner group-hover:border-white/20 transition-all">
+                <img loading="lazy" src="assets/img/cyber.jpg" alt="Cyber Security & Risk Defense" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#142338] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute top-3 left-3">
+                  <span class="px-3 py-1 rounded-full bg-[#0F1C2D]/90 backdrop-blur-md border border-white/15 text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">
+                    01 · SECURITY
+                  </span>
                 </div>
+              </div>
+
+              <!-- Content -->
+              <div class="space-y-3">
+                <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-[#C59A3F] transition-colors">
+                  Cyber Security &amp; Risk Defense
+                </h3>
+                <p class="text-sm sm:text-[15px] text-slate-300 leading-relaxed font-normal">
+                  Protect mission-critical digital assets with proactive EPP/EDR threat detection, zero-trust access control, automated threat mitigation, and hardened firewall orchestration.
+                </p>
+              </div>
+
+              <!-- Competency Tags -->
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Zero-Trust Security</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">EPP / EDR Defense</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Penetration Audits</span>
               </div>
             </div>
 
-            <!-- Expanded State -->
-            <div class="card-expanded-view w-full h-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              <div class="md:col-span-7 flex flex-col justify-between h-full space-y-4">
-                <div class="space-y-3">
-                  <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">01 · SECURITY</span>
-                  <h3 class="text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight">
-                    Cyber Security &amp; Risk Defense
-                  </h3>
-                  <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-                    Protect mission-critical digital assets with proactive EPP/EDR threat detection, zero-trust access control, automated threat mitigation, and hardened firewall orchestration.
-                  </p>
-                </div>
-                <div class="pt-2">
-                  <a href="index.html#contact"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#C59A3F] hover:bg-[#d4a83e] text-slate-950 font-semibold text-xs uppercase tracking-wider transition-all shadow-md">
-                    <span>Consult on Security</span>
-                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </a>
-                </div>
-              </div>
-              <div class="md:col-span-5 h-full flex items-center justify-center">
-                <div class="relative w-full h-full max-h-[270px] rounded-xl overflow-hidden border border-white/15 shadow-inner">
-                  <img loading="lazy" src="assets/img/cyber.jpg" alt="Cyber Security" class="w-full h-full object-cover" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent"></div>
-                </div>
+            <!-- Card Footer -->
+            <div class="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
+              <a href="index.html#contact" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#C59A3F] group-hover:text-white transition-colors">
+                <span>Consult on Security</span>
+                <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </a>
+              <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#C59A3F] group-hover:border-[#C59A3F]/40 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">north_east</span>
               </div>
             </div>
           </div>
 
           <!-- Card 02: Cloud Architecture & DevOps -->
-          <div class="acc-video-card relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/50 shadow-xl overflow-hidden cursor-pointer p-6 lg:p-7 flex flex-col justify-between"
-            data-index="1">
-            <div class="absolute -right-8 -bottom-8 w-48 h-48 rounded-full bg-blue-500/10 blur-2xl pointer-events-none"></div>
+          <div class="fade-slow delay-150 cap-card group relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/60 shadow-xl overflow-hidden p-6 sm:p-7 flex flex-col justify-between">
+            <div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-blue-500/10 blur-3xl pointer-events-none group-hover:bg-blue-500/20 transition-all duration-500"></div>
 
-            <!-- Collapsed State -->
-            <div class="card-collapsed-view absolute inset-0 p-6 lg:p-7 flex flex-col justify-between z-10">
-              <h3 class="text-xl font-bold text-white tracking-tight leading-snug">
-                Cloud Architecture &amp; DevOps
-              </h3>
-              <div class="flex items-center justify-between pt-4">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Read More</span>
-                <div class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white">
-                  <span class="material-symbols-outlined text-[18px]">north_east</span>
+            <div class="space-y-5">
+              <!-- Visual Image Container -->
+              <div class="relative w-full h-48 sm:h-52 rounded-xl overflow-hidden border border-white/10 shadow-inner group-hover:border-white/20 transition-all">
+                <img loading="lazy" src="assets/img/cloudsecurityn.jpg" alt="Cloud Architecture & DevOps" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#142338] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute top-3 left-3">
+                  <span class="px-3 py-1 rounded-full bg-[#0F1C2D]/90 backdrop-blur-md border border-white/15 text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">
+                    02 · CLOUD
+                  </span>
                 </div>
+              </div>
+
+              <!-- Content -->
+              <div class="space-y-3">
+                <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-[#C59A3F] transition-colors">
+                  Cloud Architecture &amp; DevOps
+                </h3>
+                <p class="text-sm sm:text-[15px] text-slate-300 leading-relaxed font-normal">
+                  Architect resilient multi-cloud and hybrid environments engineered for 99.99% uptime, automated CI/CD pipelines, container orchestration, and seamless disaster recovery.
+                </p>
+              </div>
+
+              <!-- Competency Tags -->
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Multi-Cloud AWS &amp; GCP</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Kubernetes DevOps</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Automated CI/CD</span>
               </div>
             </div>
 
-            <!-- Expanded State -->
-            <div class="card-expanded-view w-full h-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              <div class="md:col-span-7 flex flex-col justify-between h-full space-y-4">
-                <div class="space-y-3">
-                  <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">02 · CLOUD</span>
-                  <h3 class="text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight">
-                    Cloud Architecture &amp; DevOps
-                  </h3>
-                  <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-                    Architect resilient multi-cloud and hybrid environments engineered for 99.99% uptime, automated CI/CD pipelines, container orchestration, and seamless disaster recovery.
-                  </p>
-                </div>
-                <div class="pt-2">
-                  <a href="index.html#contact"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#C59A3F] hover:bg-[#d4a83e] text-slate-950 font-semibold text-xs uppercase tracking-wider transition-all shadow-md">
-                    <span>Consult on Cloud</span>
-                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </a>
-                </div>
-              </div>
-              <div class="md:col-span-5 h-full flex items-center justify-center">
-                <div class="relative w-full h-full max-h-[270px] rounded-xl overflow-hidden border border-white/15 shadow-inner">
-                  <img loading="lazy" src="assets/img/cloudsecurityn.jpg" alt="Cloud Architecture" class="w-full h-full object-cover" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent"></div>
-                </div>
+            <!-- Card Footer -->
+            <div class="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
+              <a href="index.html#contact" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#C59A3F] group-hover:text-white transition-colors">
+                <span>Consult on Cloud</span>
+                <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </a>
+              <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#C59A3F] group-hover:border-[#C59A3F]/40 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">north_east</span>
               </div>
             </div>
           </div>
 
           <!-- Card 03: Software Development & Integration -->
-          <div class="acc-video-card relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/50 shadow-xl overflow-hidden cursor-pointer p-6 lg:p-7 flex flex-col justify-between"
-            data-index="2">
-            <div class="absolute -right-8 -bottom-8 w-48 h-48 rounded-full bg-indigo-500/10 blur-2xl pointer-events-none"></div>
+          <div class="fade-slow delay-200 cap-card group relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/60 shadow-xl overflow-hidden p-6 sm:p-7 flex flex-col justify-between">
+            <div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none group-hover:bg-indigo-500/20 transition-all duration-500"></div>
 
-            <!-- Collapsed State -->
-            <div class="card-collapsed-view absolute inset-0 p-6 lg:p-7 flex flex-col justify-between z-10">
-              <h3 class="text-xl font-bold text-white tracking-tight leading-snug">
-                Software Development &amp; Integration
-              </h3>
-              <div class="flex items-center justify-between pt-4">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Read More</span>
-                <div class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white">
-                  <span class="material-symbols-outlined text-[18px]">north_east</span>
+            <div class="space-y-5">
+              <!-- Visual Image Container -->
+              <div class="relative w-full h-48 sm:h-52 rounded-xl overflow-hidden border border-white/10 shadow-inner group-hover:border-white/20 transition-all">
+                <img loading="lazy" src="assets/img/webde.jpg" alt="Software Development & Integration" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#142338] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute top-3 left-3">
+                  <span class="px-3 py-1 rounded-full bg-[#0F1C2D]/90 backdrop-blur-md border border-white/15 text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">
+                    03 · SOFTWARE
+                  </span>
                 </div>
+              </div>
+
+              <!-- Content -->
+              <div class="space-y-3">
+                <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-[#C59A3F] transition-colors">
+                  Software Development &amp; Integration
+                </h3>
+                <p class="text-sm sm:text-[15px] text-slate-300 leading-relaxed font-normal">
+                  Build robust, scalable, and secure custom applications tailored to business operations, covering full-lifecycle architecture from clean design to enterprise integration.
+                </p>
+              </div>
+
+              <!-- Competency Tags -->
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Bespoke Enterprise Apps</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">REST &amp; gRPC APIs</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Legacy Migration</span>
               </div>
             </div>
 
-            <!-- Expanded State -->
-            <div class="card-expanded-view w-full h-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              <div class="md:col-span-7 flex flex-col justify-between h-full space-y-4">
-                <div class="space-y-3">
-                  <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">03 · SOFTWARE</span>
-                  <h3 class="text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight">
-                    Software Development &amp; Integration
-                  </h3>
-                  <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-                    Build robust, scalable, and secure custom applications tailored to business operations, covering full-lifecycle architecture from clean design to enterprise integration.
-                  </p>
-                </div>
-                <div class="pt-2">
-                  <a href="index.html#contact"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#C59A3F] hover:bg-[#d4a83e] text-slate-950 font-semibold text-xs uppercase tracking-wider transition-all shadow-md">
-                    <span>Consult on Software</span>
-                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </a>
-                </div>
-              </div>
-              <div class="md:col-span-5 h-full flex items-center justify-center">
-                <div class="relative w-full h-full max-h-[270px] rounded-xl overflow-hidden border border-white/15 shadow-inner">
-                  <img loading="lazy" src="assets/img/webde.jpg" alt="Software Development" class="w-full h-full object-cover" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- ROW 2 (Cards 04, 05, 06) -->
-        <div class="acc-video-row flex flex-col lg:flex-row gap-5 lg:gap-6 lg:h-[350px]">
-
-          <!-- Card 04: Mobile Application Development (Default Active in Row 2) -->
-          <div class="acc-video-card is-active relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/50 shadow-xl overflow-hidden cursor-pointer p-6 lg:p-7 flex flex-col justify-between"
-            data-index="3">
-            <div class="absolute -right-8 -bottom-8 w-48 h-48 rounded-full bg-[#C59A3F]/10 blur-2xl pointer-events-none"></div>
-
-            <!-- Collapsed State -->
-            <div class="card-collapsed-view absolute inset-0 p-6 lg:p-7 flex flex-col justify-between z-10">
-              <h3 class="text-xl font-bold text-white tracking-tight leading-snug">
-                Mobile Application Development
-              </h3>
-              <div class="flex items-center justify-between pt-4">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Read More</span>
-                <div class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white">
-                  <span class="material-symbols-outlined text-[18px]">north_east</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Expanded State -->
-            <div class="card-expanded-view w-full h-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              <div class="md:col-span-7 flex flex-col justify-between h-full space-y-4">
-                <div class="space-y-3">
-                  <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">04 · MOBILE</span>
-                  <h3 class="text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight">
-                    Mobile Application Development
-                  </h3>
-                  <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-                    Engineer intuitive, high-performance mobile applications for iOS, Android, and cross-platform ecosystems with rigorous security and offline-first capabilities.
-                  </p>
-                </div>
-                <div class="pt-2">
-                  <a href="index.html#contact"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#C59A3F] hover:bg-[#d4a83e] text-slate-950 font-semibold text-xs uppercase tracking-wider transition-all shadow-md">
-                    <span>Consult on Mobile</span>
-                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </a>
-                </div>
-              </div>
-              <div class="md:col-span-5 h-full flex items-center justify-center">
-                <div class="relative w-full h-full max-h-[270px] rounded-xl overflow-hidden border border-white/15 shadow-inner">
-                  <img loading="lazy" src="assets/img/appmob.jpg" alt="Mobile Development" class="w-full h-full object-cover" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent"></div>
-                </div>
+            <!-- Card Footer -->
+            <div class="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
+              <a href="index.html#contact" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#C59A3F] group-hover:text-white transition-colors">
+                <span>Consult on Software</span>
+                <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </a>
+              <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#C59A3F] group-hover:border-[#C59A3F]/40 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">north_east</span>
               </div>
             </div>
           </div>
 
-          <!-- Card 05: Web Architecture & Secure Hosting -->
-          <div class="acc-video-card relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/50 shadow-xl overflow-hidden cursor-pointer p-6 lg:p-7 flex flex-col justify-between"
-            data-index="4">
-            <div class="absolute -right-8 -bottom-8 w-48 h-48 rounded-full bg-cyan-500/10 blur-2xl pointer-events-none"></div>
+          <!-- Card 04: Mobile Application Development -->
+          <div class="fade-slow delay-250 cap-card group relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/60 shadow-xl overflow-hidden p-6 sm:p-7 flex flex-col justify-between">
+            <div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-amber-500/10 blur-3xl pointer-events-none group-hover:bg-amber-500/20 transition-all duration-500"></div>
 
-            <!-- Collapsed State -->
-            <div class="card-collapsed-view absolute inset-0 p-6 lg:p-7 flex flex-col justify-between z-10">
-              <h3 class="text-xl font-bold text-white tracking-tight leading-snug">
-                Web Designing &amp; Secure Hosting
-              </h3>
-              <div class="flex items-center justify-between pt-4">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Read More</span>
-                <div class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white">
-                  <span class="material-symbols-outlined text-[18px]">north_east</span>
+            <div class="space-y-5">
+              <!-- Visual Image Container -->
+              <div class="relative w-full h-48 sm:h-52 rounded-xl overflow-hidden border border-white/10 shadow-inner group-hover:border-white/20 transition-all">
+                <img loading="lazy" src="assets/img/appmob.jpg" alt="Mobile Application Development" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#142338] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute top-3 left-3">
+                  <span class="px-3 py-1 rounded-full bg-[#0F1C2D]/90 backdrop-blur-md border border-white/15 text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">
+                    04 · MOBILE
+                  </span>
                 </div>
+              </div>
+
+              <!-- Content -->
+              <div class="space-y-3">
+                <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-[#C59A3F] transition-colors">
+                  Mobile Application Development
+                </h3>
+                <p class="text-sm sm:text-[15px] text-slate-300 leading-relaxed font-normal">
+                  Engineer intuitive, high-performance mobile applications for iOS, Android, and cross-platform ecosystems with rigorous security, offline-first reliability, and seamless sync.
+                </p>
+              </div>
+
+              <!-- Competency Tags -->
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">iOS &amp; Android Native</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Cross-Platform Flutter</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Offline-First Sync</span>
               </div>
             </div>
 
-            <!-- Expanded State -->
-            <div class="card-expanded-view w-full h-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              <div class="md:col-span-7 flex flex-col justify-between h-full space-y-4">
-                <div class="space-y-3">
-                  <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">05 · WEB PLATFORMS</span>
-                  <h3 class="text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight">
-                    Web Designing &amp; Secure Hosting
-                  </h3>
-                  <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-                    Deliver modern, high-speed, responsive web platforms paired with enterprise-grade hosting infrastructure ensuring 99.9%+ availability and zero-downtime deployment.
-                  </p>
-                </div>
-                <div class="pt-2">
-                  <a href="index.html#contact"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#C59A3F] hover:bg-[#d4a83e] text-slate-950 font-semibold text-xs uppercase tracking-wider transition-all shadow-md">
-                    <span>Consult on Web</span>
-                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </a>
+            <!-- Card Footer -->
+            <div class="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
+              <a href="index.html#contact" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#C59A3F] group-hover:text-white transition-colors">
+                <span>Consult on Mobile</span>
+                <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </a>
+              <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#C59A3F] group-hover:border-[#C59A3F]/40 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">north_east</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 05: Web Designing & Secure Hosting -->
+          <div class="fade-slow delay-300 cap-card group relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/60 shadow-xl overflow-hidden p-6 sm:p-7 flex flex-col justify-between">
+            <div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none group-hover:bg-cyan-500/20 transition-all duration-500"></div>
+
+            <div class="space-y-5">
+              <!-- Visual Image Container -->
+              <div class="relative w-full h-48 sm:h-52 rounded-xl overflow-hidden border border-white/10 shadow-inner group-hover:border-white/20 transition-all">
+                <img loading="lazy" src="assets/img/webhostn.jpg" alt="Web Designing & Secure Hosting" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#142338] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute top-3 left-3">
+                  <span class="px-3 py-1 rounded-full bg-[#0F1C2D]/90 backdrop-blur-md border border-white/15 text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">
+                    05 · WEB PLATFORMS
+                  </span>
                 </div>
               </div>
-              <div class="md:col-span-5 h-full flex items-center justify-center">
-                <div class="relative w-full h-full max-h-[270px] rounded-xl overflow-hidden border border-white/15 shadow-inner">
-                  <img loading="lazy" src="assets/img/webhostn.jpg" alt="Web Architecture" class="w-full h-full object-cover" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent"></div>
-                </div>
+
+              <!-- Content -->
+              <div class="space-y-3">
+                <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-[#C59A3F] transition-colors">
+                  Web Designing &amp; Secure Hosting
+                </h3>
+                <p class="text-sm sm:text-[15px] text-slate-300 leading-relaxed font-normal">
+                  Deliver modern, high-speed, responsive web platforms paired with enterprise-grade hosting infrastructure ensuring 99.9%+ availability, automated TLS, and zero-downtime deployment.
+                </p>
+              </div>
+
+              <!-- Competency Tags -->
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Responsive Web Engineering</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">High-Availability Hosting</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">TLS Hardening &amp; CDN</span>
+              </div>
+            </div>
+
+            <!-- Card Footer -->
+            <div class="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
+              <a href="index.html#contact" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#C59A3F] group-hover:text-white transition-colors">
+                <span>Consult on Web</span>
+                <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </a>
+              <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#C59A3F] group-hover:border-[#C59A3F]/40 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">north_east</span>
               </div>
             </div>
           </div>
 
           <!-- Card 06: Data Systems & Analytics -->
-          <div class="acc-video-card relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/50 shadow-xl overflow-hidden cursor-pointer p-6 lg:p-7 flex flex-col justify-between"
-            data-index="5">
-            <div class="absolute -right-8 -bottom-8 w-48 h-48 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none"></div>
+          <div class="fade-slow delay-350 cap-card group relative rounded-2xl bg-[#142338] border border-white/10 hover:border-[#C59A3F]/60 shadow-xl overflow-hidden p-6 sm:p-7 flex flex-col justify-between">
+            <div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none group-hover:bg-emerald-500/20 transition-all duration-500"></div>
 
-            <!-- Collapsed State -->
-            <div class="card-collapsed-view absolute inset-0 p-6 lg:p-7 flex flex-col justify-between z-10">
-              <h3 class="text-xl font-bold text-white tracking-tight leading-snug">
-                Data Systems &amp; Analytics
-              </h3>
-              <div class="flex items-center justify-between pt-4">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Read More</span>
-                <div class="w-10 h-10 rounded-full bg-white/10 border border-white/15 flex items-center justify-center text-white">
-                  <span class="material-symbols-outlined text-[18px]">north_east</span>
+            <div class="space-y-5">
+              <!-- Visual Image Container -->
+              <div class="relative w-full h-48 sm:h-52 rounded-xl overflow-hidden border border-white/10 shadow-inner group-hover:border-white/20 transition-all">
+                <img loading="lazy" src="assets/img/datanaly.jpg" alt="Data Systems & Analytics" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#142338] via-transparent to-transparent opacity-80"></div>
+                <div class="absolute top-3 left-3">
+                  <span class="px-3 py-1 rounded-full bg-[#0F1C2D]/90 backdrop-blur-md border border-white/15 text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">
+                    06 · DATA SYSTEMS
+                  </span>
                 </div>
+              </div>
+
+              <!-- Content -->
+              <div class="space-y-3">
+                <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-[#C59A3F] transition-colors">
+                  Data Systems &amp; Analytics
+                </h3>
+                <p class="text-sm sm:text-[15px] text-slate-300 leading-relaxed font-normal">
+                  Build high-throughput ETL data pipelines, robust PostgreSQL/NoSQL data architectures, and real-time operational telemetry for mission-critical enterprise decision making.
+                </p>
+              </div>
+
+              <!-- Competency Tags -->
+              <div class="flex flex-wrap gap-2 pt-1">
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">High-Throughput ETL</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">PostgreSQL &amp; NoSQL</span>
+                <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">Real-Time Telemetry</span>
               </div>
             </div>
 
-            <!-- Expanded State -->
-            <div class="card-expanded-view w-full h-full grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              <div class="md:col-span-7 flex flex-col justify-between h-full space-y-4">
-                <div class="space-y-3">
-                  <span class="text-[11px] font-mono font-bold uppercase tracking-widest text-[#C59A3F]">06 · DATA SYSTEMS</span>
-                  <h3 class="text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight">
-                    Data Systems &amp; Analytics
-                  </h3>
-                  <p class="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-                    Build high-throughput ETL data pipelines, robust PostgreSQL/NoSQL data architectures, and real-time operational telemetry for enterprise decision making.
-                  </p>
-                </div>
-                <div class="pt-2">
-                  <a href="index.html#contact"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#C59A3F] hover:bg-[#d4a83e] text-slate-950 font-semibold text-xs uppercase tracking-wider transition-all shadow-md">
-                    <span>Consult on Data</span>
-                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </a>
-                </div>
-              </div>
-              <div class="md:col-span-5 h-full flex items-center justify-center">
-                <div class="relative w-full h-full max-h-[270px] rounded-xl overflow-hidden border border-white/15 shadow-inner">
-                  <img loading="lazy" src="assets/img/datanaly.jpg" alt="Data Systems" class="w-full h-full object-cover" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent"></div>
-                </div>
+            <!-- Card Footer -->
+            <div class="pt-6 border-t border-white/10 mt-6 flex items-center justify-between">
+              <a href="index.html#contact" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#C59A3F] group-hover:text-white transition-colors">
+                <span>Consult on Data</span>
+                <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </a>
+              <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-[#C59A3F] group-hover:border-[#C59A3F]/40 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">north_east</span>
               </div>
             </div>
           </div>
 
         </div>
 
-        <!-- Clean Bottom Reassurance -->
+        <!-- Clean Bottom Reassurance Bar -->
         <div class="pt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-slate-400 border-t border-white/10">
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-[#C59A3F]"></span>
@@ -639,32 +632,7 @@
 
   </main>
 
-  <!-- Accordion Hover & Click Controller -->
-  <script>
-    document.querySelectorAll('.acc-video-row').forEach(row => {
-      const cards = row.querySelectorAll('.acc-video-card');
-
-      function setActiveCard(targetCard) {
-        cards.forEach(card => {
-          if (card === targetCard) {
-            card.classList.add('is-active');
-          } else {
-            card.classList.remove('is-active');
-          }
-        });
-      }
-
-      cards.forEach(card => {
-        card.addEventListener('mouseenter', function () {
-          setActiveCard(this);
-        });
-        card.addEventListener('click', function (e) {
-          if (e.target.closest('a')) return;
-          setActiveCard(this);
-        });
-      });
-    });
-  </script>
+  <!-- Intersection Observer for Scroll Reveals -->
 
 
   <script>
