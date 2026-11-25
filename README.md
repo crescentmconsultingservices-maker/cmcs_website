@@ -11,7 +11,6 @@ CMCS/
 ├── capabilities.html       # What we can do (6 practice areas showcase)
 ├── careers.html            # Work with us (culture, open engineering roles)
 ├── privacy-policy.html     # Data protection & privacy policy
-├── terms.html              # Terms of engagement & standard commercial terms
 │
 ├── assets/
 │   ├── img/                # Production images, logos, and mountain hero assets
