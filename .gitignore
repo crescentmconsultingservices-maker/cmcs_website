@@ -1,0 +1,12 @@
+# Private credentials & local overrides
+mail_config.local.php
+.env
+.env.local
+
+# Node modules
+node_modules/
+
+# OS / Editor temporary files
+.DS_Store
+Thumbs.db
+*.log
