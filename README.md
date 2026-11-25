@@ -68,22 +68,24 @@ Or by creating a local uncommitted `mail_config.local.php` file based on `mail_c
 ### 2. SMTP Credentials Setup
 In production, never commit your real SMTP password to version control. Use either of these methods:
 - **Option A (Environment Variables):** Set the variables (`SMTP_HOST`, `SMTP_USER`, `SMTP_PASS`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_FROM`, `SMTP_TO`) in your hosting panel (e.g., cPanel Application Manager, systemd, or Apache `SetEnv`).
-- **Option B (`mail_config.local.php`):** Create a file named `mail_config.local.php` in the site root returning an associative array with your credentials. This file is git-ignored and overrides defaults securely:
+- **Option B (`mail_config.local.php`):** Create a file named `mail_config.local.php` in the site root returning an associative array with your credentials. Both standard keys (`password`, `username`, `host`) and prefixed keys (`smtp_pass`, `smtp_user`, `smtp_host`) are supported:
   ```php
   <?php
   return [
-      'smtp_host'   => 'crescentmoon.ai',
-      'smtp_user'   => 'crescentmoon',
-      'smtp_pass'   => 'YOUR_SECURE_PASSWORD',
-      'smtp_port'   => 465,
-      'smtp_secure' => 'ssl',
-      'smtp_from'   => 'ravindran.p@crescentmoon.ai',
-      'smtp_to'     => 'ravindran.p@crescentmoon.ai',
+      'host'        => 'crescentmoon.ai',
+      'username'    => 'crescentmoon',
+      'password'    => 'YOUR_SECURE_PASSWORD',
+      'port'        => 465,
+      'secure'      => 'ssl',
+      'from_email'  => 'ravindran.p@crescentmoon.ai',
+      'from_name'   => 'Crescent Moon Contact',
+      'recipient'   => 'ravindran.p@crescentmoon.ai',
+      'trust_proxy' => false, // Set to true only if behind Cloudflare or reverse proxy
   ];
   ```
 
 ### 3. Cloudflare & Reverse Proxy Notes
-`send_mail.php` automatically detects real client IPs from `CF-Connecting-IP`, `X-Forwarded-For`, and `X-Real-IP` headers to prevent IP rate-limiting collisions when hosted behind Cloudflare, AWS ALB, or reverse proxies.
+By default, `send_mail.php` relies strictly on unforgeable `REMOTE_ADDR` from the OS TCP stack so attackers cannot spoof IP rate limits using forged request headers. If you deploy behind Cloudflare or an enterprise reverse proxy, set `'trust_proxy' => true` (or `TRUST_PROXY=true` in env) to enable parsing of `CF-Connecting-IP`, `X-Forwarded-For`, and `X-Real-IP`.
 
 ### 4. Large Media & Git LFS
 If adding additional high-resolution video files or raw assets in the future, initialize Git LFS (`git lfs track "*.mp4"`) to maintain optimal repository cloning speeds.

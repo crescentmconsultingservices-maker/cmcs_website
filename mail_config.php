@@ -11,12 +11,13 @@
  */
 
 return [
-    'host'      => getenv('SMTP_HOST') ?: 'crescentmoon.ai',
-    'username'  => getenv('SMTP_USER') ?: 'crescentmoon',
-    'password'  => getenv('SMTP_PASS') ?: '', // Empty by default; loaded from mail_config.local.php or env
-    'port'      => (int)(getenv('SMTP_PORT') ?: 465),
-    'secure'    => getenv('SMTP_SECURE') ?: 'ssl',
-    'from_email'=> getenv('SMTP_FROM') ?: 'ravindran.p@crescentmoon.ai',
-    'from_name' => getenv('SMTP_FROM_NAME') ?: 'Crescent Moon Inquiries',
-    'recipient' => getenv('SMTP_TO') ?: 'ravindran.p@crescentmoon.ai',
+    'host'        => getenv('SMTP_HOST') ?: 'crescentmoon.ai',
+    'username'    => getenv('SMTP_USER') ?: 'crescentmoon',
+    'password'    => getenv('SMTP_PASS') ?: '', // Empty by default; loaded from mail_config.local.php or env
+    'port'        => (int)(getenv('SMTP_PORT') ?: 465),
+    'secure'      => getenv('SMTP_SECURE') ?: 'ssl',
+    'from_email'  => getenv('SMTP_FROM') ?: 'ravindran.p@crescentmoon.ai',
+    'from_name'   => getenv('SMTP_FROM_NAME') ?: 'Crescent Moon Inquiries',
+    'recipient'   => getenv('SMTP_TO') ?: 'ravindran.p@crescentmoon.ai',
+    'trust_proxy' => (getenv('TRUST_PROXY') === 'true' || getenv('TRUST_PROXY') === '1'), // Enable only if behind Cloudflare/reverse proxy
 ];

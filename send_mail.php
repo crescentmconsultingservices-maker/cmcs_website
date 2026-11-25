@@ -17,12 +17,25 @@ use PHPMailer\PHPMailer\Exception;
 require_once __DIR__ . '/phpmailer_vendor/autoload.php';
 
 // Load configuration: prioritizes uncommitted mail_config.local.php if present, else mail_config.php / env
-$config = [];
+$rawConfig = [];
 if (file_exists(__DIR__ . '/mail_config.local.php')) {
-    $config = require __DIR__ . '/mail_config.local.php';
+    $rawConfig = require __DIR__ . '/mail_config.local.php';
 } elseif (file_exists(__DIR__ . '/mail_config.php')) {
-    $config = require __DIR__ . '/mail_config.php';
+    $rawConfig = require __DIR__ . '/mail_config.php';
 }
+
+// Normalize configuration keys to seamlessly support both formats (e.g., 'smtp_pass' and 'password')
+$config = [
+    'host'        => $rawConfig['host'] ?? $rawConfig['smtp_host'] ?? getenv('SMTP_HOST') ?: 'crescentmoon.ai',
+    'username'    => $rawConfig['username'] ?? $rawConfig['smtp_user'] ?? getenv('SMTP_USER') ?: 'crescentmoon',
+    'password'    => $rawConfig['password'] ?? $rawConfig['smtp_pass'] ?? getenv('SMTP_PASS') ?: '',
+    'port'        => (int)($rawConfig['port'] ?? $rawConfig['smtp_port'] ?? getenv('SMTP_PORT') ?: 465),
+    'secure'      => $rawConfig['secure'] ?? $rawConfig['smtp_secure'] ?? getenv('SMTP_SECURE') ?: 'ssl',
+    'from_email'  => $rawConfig['from_email'] ?? $rawConfig['smtp_from'] ?? getenv('SMTP_FROM') ?: 'ravindran.p@crescentmoon.ai',
+    'from_name'   => $rawConfig['from_name'] ?? $rawConfig['smtp_from_name'] ?? getenv('SMTP_FROM_NAME') ?: 'Crescent Moon Inquiries',
+    'recipient'   => $rawConfig['recipient'] ?? $rawConfig['smtp_to'] ?? getenv('SMTP_TO') ?: 'ravindran.p@crescentmoon.ai',
+    'trust_proxy' => $rawConfig['trust_proxy'] ?? (getenv('TRUST_PROXY') === 'true' || getenv('TRUST_PROXY') === '1'),
+];
 
 // Support both FormData / urlencoded and application/json payloads
 $input = $_POST;
@@ -51,32 +64,52 @@ if (!empty($input['_form_ts'])) {
     }
 }
 
-// 3. Robust Client IP Detection (Supports Cloudflare, AWS ALB, Nginx & Apache reverse proxies)
-function get_client_ip() {
-    if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-        return filter_var($_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP) ? $_SERVER['HTTP_CF_CONNECTING_IP'] : 'invalid_cf_ip';
-    }
-    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-        $client = trim($ips[0]);
-        if (filter_var($client, FILTER_VALIDATE_IP)) {
-            return $client;
+// 3. Client IP Detection (Strict & Unforgeable by Default)
+function get_client_ip($trustProxy = false) {
+    $remoteAddr = filter_var($_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+    
+    // Only parse proxy headers if TRUST_PROXY is explicitly enabled by the server admin
+    if ($trustProxy) {
+        if (!empty($_SERVER['HTTP_CF_CONNECTING_IP']) && filter_var($_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP)) {
+            return $_SERVER['HTTP_CF_CONNECTING_IP'];
+        }
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $client = trim($ips[0]);
+            if (filter_var($client, FILTER_VALIDATE_IP)) {
+                return $client;
+            }
+        }
+        if (!empty($_SERVER['HTTP_X_REAL_IP']) && filter_var($_SERVER['HTTP_X_REAL_IP'], FILTER_VALIDATE_IP)) {
+            return $_SERVER['HTTP_X_REAL_IP'];
         }
     }
-    if (!empty($_SERVER['HTTP_X_REAL_IP']) && filter_var($_SERVER['HTTP_X_REAL_IP'], FILTER_VALIDATE_IP)) {
-        return $_SERVER['HTTP_X_REAL_IP'];
-    }
-    return filter_var($_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+    
+    return $remoteAddr;
 }
 
-$clientIp = get_client_ip();
+$clientIp = get_client_ip($config['trust_proxy']);
 
-// 4. Server-Side Rate Limiting (Isolated project storage with fallback)
+// 4. Server-Side Rate Limiting (Isolated project storage with atomic locking & cleanup)
 $storageDir = __DIR__ . '/.rate_limit';
 if (!is_dir($storageDir)) {
     @mkdir($storageDir, 0750, true);
-    // Protect rate limit directory from web access
-    @file_put_contents($storageDir . '/.htaccess', "Require all denied\nDeny from all\n");
+    // Multi-version Apache protection
+    $htaccessContent = "<IfModule mod_authz_core.c>\n  Require all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\n  Deny from all\n</IfModule>\nOptions -Indexes\n";
+    @file_put_contents($storageDir . '/.htaccess', $htaccessContent);
+}
+
+// Garbage collection: clean up expired rate files (> 1 hour old) with 5% probability
+if (is_dir($storageDir) && mt_rand(1, 20) === 1) {
+    $files = @glob($storageDir . '/rl_*.json');
+    if (!empty($files)) {
+        $now = time();
+        foreach ($files as $f) {
+            if ($now - @filemtime($f) > 3600) {
+                @unlink($f);
+            }
+        }
+    }
 }
 
 $rateLimitFile = is_writable($storageDir)
@@ -86,10 +119,13 @@ $rateLimitFile = is_writable($storageDir)
 $rateData = ['count' => 0, 'start' => time()];
 
 if (file_exists($rateLimitFile)) {
-    $stored = json_decode(@file_get_contents($rateLimitFile), true);
-    if (is_array($stored) && isset($stored['start']) && isset($stored['count'])) {
-        if (time() - $stored['start'] < 600) { // 10 minute window
-            $rateData = $stored;
+    $rawRate = @file_get_contents($rateLimitFile);
+    if ($rawRate !== false) {
+        $stored = json_decode($rawRate, true);
+        if (is_array($stored) && isset($stored['start']) && isset($stored['count'])) {
+            if (time() - $stored['start'] < 600) { // 10 minute sliding window
+                $rateData = $stored;
+            }
         }
     }
 }
@@ -104,7 +140,7 @@ if ($rateData['count'] >= 5) {
 }
 
 $rateData['count']++;
-@file_put_contents($rateLimitFile, json_encode($rateData));
+@file_put_contents($rateLimitFile, json_encode($rateData), LOCK_EX);
 
 // Extract & Sanitize Inputs
 $user_name = trim($input['user_name'] ?? '');
