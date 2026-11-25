@@ -51,15 +51,44 @@ if (!empty($input['_form_ts'])) {
     }
 }
 
-// 3. Server-Side Rate Limiting per Client IP (Max 5 inquiries per 10 minutes)
-$clientIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-$rateLimitFile = sys_get_temp_dir() . '/cmcs_rate_' . md5($clientIp) . '.json';
+// 3. Robust Client IP Detection (Supports Cloudflare, AWS ALB, Nginx & Apache reverse proxies)
+function get_client_ip() {
+    if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+        return filter_var($_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP) ? $_SERVER['HTTP_CF_CONNECTING_IP'] : 'invalid_cf_ip';
+    }
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        $client = trim($ips[0]);
+        if (filter_var($client, FILTER_VALIDATE_IP)) {
+            return $client;
+        }
+    }
+    if (!empty($_SERVER['HTTP_X_REAL_IP']) && filter_var($_SERVER['HTTP_X_REAL_IP'], FILTER_VALIDATE_IP)) {
+        return $_SERVER['HTTP_X_REAL_IP'];
+    }
+    return filter_var($_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+}
+
+$clientIp = get_client_ip();
+
+// 4. Server-Side Rate Limiting (Isolated project storage with fallback)
+$storageDir = __DIR__ . '/.rate_limit';
+if (!is_dir($storageDir)) {
+    @mkdir($storageDir, 0750, true);
+    // Protect rate limit directory from web access
+    @file_put_contents($storageDir . '/.htaccess', "Require all denied\nDeny from all\n");
+}
+
+$rateLimitFile = is_writable($storageDir)
+    ? $storageDir . '/rl_' . md5($clientIp) . '.json'
+    : sys_get_temp_dir() . '/cmcs_rl_' . md5($clientIp) . '.json';
+
 $rateData = ['count' => 0, 'start' => time()];
 
 if (file_exists($rateLimitFile)) {
     $stored = json_decode(@file_get_contents($rateLimitFile), true);
     if (is_array($stored) && isset($stored['start']) && isset($stored['count'])) {
-        if (time() - $stored['start'] < 600) {
+        if (time() - $stored['start'] < 600) { // 10 minute window
             $rateData = $stored;
         }
     }

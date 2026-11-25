@@ -3,6 +3,9 @@ mail_config.local.php
 .env
 .env.local
 
+# Rate limiter data directory
+.rate_limit/
+
 # Node modules
 node_modules/
 
