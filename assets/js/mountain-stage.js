@@ -88,7 +88,11 @@ let sharedScrollVelocity = 0;
      */
     (function initWindCanvas() {
       const canvas = document.getElementById('wind-canvas');
-      if (!canvas || prefersReducedMotion) return;
+      if (!canvas) return;
+      if (prefersReducedMotion) {
+        canvas.style.visibility = 'hidden';
+        return;
+      }
       const ctx = canvas.getContext('2d');
       let width = canvas.width = window.innerWidth;
       let height = canvas.height = window.innerHeight;
