@@ -1,9 +1,16 @@
 let sharedScrollVelocity = 0;
     let isDrawerOpen = false;
+    const prefersReducedMotionQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    let prefersReducedMotion = prefersReducedMotionQuery ? prefersReducedMotionQuery.matches : false;
+    if (prefersReducedMotionQuery && prefersReducedMotionQuery.addEventListener) {
+      prefersReducedMotionQuery.addEventListener('change', (e) => {
+        prefersReducedMotion = e.matches;
+      });
+    }
 
-    // Initialize Lenis ultra-smooth momentum scrolling (eliminates stepped mouse-wheel stutter)
+    // Initialize Lenis ultra-smooth momentum scrolling (disabled when prefers-reduced-motion is enabled)
     let lenisInstance = null;
-    if (typeof Lenis !== 'undefined') {
+    if (typeof Lenis !== 'undefined' && !prefersReducedMotion) {
       lenisInstance = new Lenis({
         duration: 1.25,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -14,9 +21,40 @@ let sharedScrollVelocity = 0;
     }
 
     /**
+     * Mobile section navigation toggle
+     */
+    window.toggleMobileNav = function() {
+      const menu = document.getElementById('mobile-nav-menu');
+      const toggleBtn = document.getElementById('mobile-nav-toggle');
+      const icon = document.getElementById('mobile-nav-icon');
+      if (!menu || !toggleBtn) return;
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        menu.classList.add('flex');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        if (icon) icon.textContent = 'close';
+      } else {
+        window.closeMobileNav();
+      }
+    };
+
+    window.closeMobileNav = function() {
+      const menu = document.getElementById('mobile-nav-menu');
+      const toggleBtn = document.getElementById('mobile-nav-toggle');
+      const icon = document.getElementById('mobile-nav-icon');
+      if (!menu || !toggleBtn) return;
+      menu.classList.add('hidden');
+      menu.classList.remove('flex');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      if (icon) icon.textContent = 'menu';
+    };
+
+    /**
      * Helper to smoothly scroll to a specific mountain pass from navbar / buttons
      */
     function triggerTitleAnimation(idx) {
+      if (prefersReducedMotion) return;
       const titles = [
         document.querySelector('#content-0 .hero-slowmo-title'),
         document.querySelector('#content-1 .section-slowmo-title'),
@@ -32,13 +70,15 @@ let sharedScrollVelocity = 0;
     }
 
     window.scrollToMountain = function(idx) {
-      setTimeout(() => triggerTitleAnimation(idx), 200);
+      if (!prefersReducedMotion) {
+        setTimeout(() => triggerTitleAnimation(idx), 200);
+      }
       const sections = document.querySelectorAll('.mountain-section');
       if (sections && sections[idx]) {
-        if (lenisInstance) {
+        if (lenisInstance && !prefersReducedMotion) {
           lenisInstance.scrollTo(sections[idx], { duration: 1.35 });
         } else {
-          sections[idx].scrollIntoView({ behavior: 'smooth' });
+          sections[idx].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
         }
       }
     };
@@ -48,7 +88,7 @@ let sharedScrollVelocity = 0;
      */
     (function initWindCanvas() {
       const canvas = document.getElementById('wind-canvas');
-      if (!canvas) return;
+      if (!canvas || prefersReducedMotion) return;
       const ctx = canvas.getContext('2d');
       let width = canvas.width = window.innerWidth;
       let height = canvas.height = window.innerHeight;
@@ -176,7 +216,11 @@ let sharedScrollVelocity = 0;
         sharedScrollVelocity = sharedScrollVelocity * 0.86 + deltaY * 0.015;
 
         const targetProgress = getTargetProgress(currentScrollY);
-        smoothStageProgress += (targetProgress - smoothStageProgress) * 0.14;
+        if (prefersReducedMotion) {
+          smoothStageProgress = targetProgress;
+        } else {
+          smoothStageProgress += (targetProgress - smoothStageProgress) * 0.14;
+        }
 
         smoothMouseX += (mouseX - smoothMouseX) * 0.05;
         smoothMouseY += (mouseY - smoothMouseY) * 0.05;
@@ -184,7 +228,7 @@ let sharedScrollVelocity = 0;
         const now = time || performance.now();
         const swayPhase = now * 0.00075;
         const isPortrait = window.innerHeight > window.innerWidth;
-        const motionScale = isPortrait ? 0.55 : 1.0;
+        const motionScale = prefersReducedMotion ? 0 : (isPortrait ? 0.55 : 1.0);
 
         // S-curve winding valley route coordinates per mountain pass
         const routeWaypoints = [
@@ -194,9 +238,9 @@ let sharedScrollVelocity = 0;
           { x: 1.2,  y: -0.9, exitX: 0.0,  exitY: 0.0  }  // Pass 4 (Work With Us - 9u2qau) -> settles at summit
         ];
 
-        const breathingScale = Math.sin(swayPhase) * 0.003;
-        const swayX = (Math.sin(swayPhase * 0.9) * 0.18 - smoothMouseX * 0.32) * motionScale;
-        const swayY = (Math.cos(swayPhase * 0.75) * 0.14 - smoothMouseY * 0.24) * motionScale;
+        const breathingScale = prefersReducedMotion ? 0 : Math.sin(swayPhase) * 0.003;
+        const swayX = prefersReducedMotion ? 0 : (Math.sin(swayPhase * 0.9) * 0.18 - smoothMouseX * 0.32) * motionScale;
+        const swayY = prefersReducedMotion ? 0 : (Math.cos(swayPhase * 0.75) * 0.14 - smoothMouseY * 0.24) * motionScale;
 
         // Smooth camera route interpolation between current & next mountain pass
         const baseIdx = Math.max(0, Math.min(layers.length - 1, Math.floor(smoothStageProgress)));
@@ -316,6 +360,13 @@ let sharedScrollVelocity = 0;
      * 3. Shared 3D Z-Axis Depth Pull Drawer Controls (Story, Capabilities, Contact)
      */
     let activeDrawerId = null;
+    let lastFocusedElement = null;
+
+    function getFocusableElements(container) {
+      if (!container) return [];
+      const selector = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      return Array.from(container.querySelectorAll(selector)).filter((el) => el.offsetParent !== null);
+    }
 
     window.openGlassDrawer = function(drawerId) {
       const drawer = document.getElementById(drawerId);
@@ -324,6 +375,8 @@ let sharedScrollVelocity = 0;
       const header = document.querySelector('header');
       const stage = document.getElementById('content-stage');
       if (!drawer || !panel) return;
+      if (typeof window.closeMobileNav === 'function') window.closeMobileNav();
+      lastFocusedElement = document.activeElement;
       activeDrawerId = drawerId;
       isDrawerOpen = true;
       if (lenisInstance) lenisInstance.stop();
@@ -338,6 +391,10 @@ let sharedScrollVelocity = 0;
       requestAnimationFrame(() => {
         drawer.classList.remove('opacity-0');
         panel.classList.remove('scale-[0.78]', 'blur-[10px]', 'opacity-0');
+        const focusables = getFocusableElements(drawer);
+        if (focusables.length > 0) {
+          focusables[0].focus({ preventScroll: true });
+        }
       });
     };
 
@@ -362,7 +419,11 @@ let sharedScrollVelocity = 0;
         if (activeDrawerId === targetId) activeDrawerId = null;
         isDrawerOpen = false;
         if (lenisInstance) lenisInstance.start();
-      }, 520);
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus({ preventScroll: true });
+          lastFocusedElement = null;
+        }
+      }, prefersReducedMotion ? 0 : 520);
     };
 
     window.openStoryDrawer = function() { openGlassDrawer('story-drawer'); };
@@ -434,6 +495,25 @@ let sharedScrollVelocity = 0;
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && activeDrawerId) {
         closeGlassDrawer(activeDrawerId);
+        return;
+      }
+      if (e.key === 'Tab' && activeDrawerId) {
+        const drawer = document.getElementById(activeDrawerId);
+        const focusables = getFocusableElements(drawer);
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first || !drawer.contains(document.activeElement)) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last || !drawer.contains(document.activeElement)) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     });
 

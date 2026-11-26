@@ -74,10 +74,12 @@ function get_client_ip($trustProxy = false) {
             return $_SERVER['HTTP_CF_CONNECTING_IP'];
         }
         if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            $client = trim($ips[0]);
-            if (filter_var($client, FILTER_VALIDATE_IP)) {
-                return $client;
+            $ips = array_reverse(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
+            foreach ($ips as $ip) {
+                $candidate = trim($ip);
+                if (filter_var($candidate, FILTER_VALIDATE_IP)) {
+                    return $candidate;
+                }
             }
         }
         if (!empty($_SERVER['HTTP_X_REAL_IP']) && filter_var($_SERVER['HTTP_X_REAL_IP'], FILTER_VALIDATE_IP)) {
@@ -238,7 +240,17 @@ try {
     $mail->AltBody = "New Inquiry from Crescent Moon Website\n\nName: $user_name\nEmail: $user_email\nSubject: $subject\n\nMessage:\n$message\n";
 
     // Optional Resume File Attachment (PDF / DOC / DOCX, max 5MB)
+    if (empty($_POST) && empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > 0) {
+        http_response_code(413);
+        echo json_encode(['success' => false, 'message' => 'Uploaded file exceeds the server post_max_size limit. Please upload a smaller file.']);
+        exit;
+    }
     if (isset($_FILES['resume']) && $_FILES['resume']['error'] !== UPLOAD_ERR_NO_FILE) {
+        if ($_FILES['resume']['error'] === UPLOAD_ERR_INI_SIZE || $_FILES['resume']['error'] === UPLOAD_ERR_FORM_SIZE) {
+            http_response_code(413);
+            echo json_encode(['success' => false, 'message' => 'Resume exceeds server upload limit (' . ini_get('upload_max_filesize') . '). Please upload a smaller file.']);
+            exit;
+        }
         if ($_FILES['resume']['error'] !== UPLOAD_ERR_OK) {
             http_response_code(400);
             echo json_encode(['success' => false, 'message' => 'Resume upload failed. Please try a smaller file (max 5MB).']);
@@ -257,8 +269,7 @@ try {
         $allowedMime = [
             'application/pdf',
             'application/msword',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'application/octet-stream'
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         ];
         if (!in_array($ext, $allowedExt, true) || !in_array($mime, $allowedMime, true)) {
             http_response_code(400);
