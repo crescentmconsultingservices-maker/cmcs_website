@@ -168,8 +168,11 @@
         rgba(15, 28, 45, 0.34) 48%,
         rgba(11, 21, 34, 0.48) 100%
       );
-      backdrop-filter: blur(28px) saturate(185%) contrast(104%);
-      -webkit-backdrop-filter: blur(28px) saturate(185%) contrast(104%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transform: translateZ(0);
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
       border: 1px solid rgba(255, 255, 255, 0.22);
       box-shadow:
         0 28px 80px -12px rgba(0, 0, 0, 0.55),

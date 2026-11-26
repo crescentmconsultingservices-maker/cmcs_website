@@ -108,6 +108,10 @@ let sharedScrollVelocity = 0;
       }));
 
       function renderParticles() {
+        if (isDrawerOpen) {
+          requestAnimationFrame(renderParticles);
+          return;
+        }
         ctx.clearRect(0, 0, width, height);
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
@@ -372,6 +376,7 @@ let sharedScrollVelocity = 0;
       const drawer = document.getElementById(drawerId);
       const panel = document.getElementById(drawerId + '-panel');
       const depthStage = document.getElementById('depth-stage');
+      const windCanvas = document.getElementById('wind-canvas');
       const header = document.querySelector('header');
       const stage = document.getElementById('content-stage');
       if (!drawer || !panel) return;
@@ -380,9 +385,11 @@ let sharedScrollVelocity = 0;
       activeDrawerId = drawerId;
       isDrawerOpen = true;
       if (lenisInstance) lenisInstance.stop();
+      if (windCanvas) windCanvas.style.visibility = 'hidden';
       if (header) header.style.opacity = '0';
       if (stage) stage.style.opacity = '0';
       if (depthStage) depthStage.classList.add('depth-receded');
+      panel.classList.add('will-change-transform');
       drawer.classList.remove('hidden');
       drawer.classList.add('flex');
       document.body.style.overflow = 'hidden';
@@ -396,6 +403,11 @@ let sharedScrollVelocity = 0;
           focusables[0].focus({ preventScroll: true });
         }
       });
+      setTimeout(() => {
+        if (activeDrawerId === drawerId) {
+          panel.classList.remove('will-change-transform');
+        }
+      }, prefersReducedMotion ? 0 : 650);
     };
 
     window.closeGlassDrawer = function(drawerId) {
@@ -404,9 +416,11 @@ let sharedScrollVelocity = 0;
       const drawer = document.getElementById(targetId);
       const panel = document.getElementById(targetId + '-panel');
       const depthStage = document.getElementById('depth-stage');
+      const windCanvas = document.getElementById('wind-canvas');
       const header = document.querySelector('header');
       const stage = document.getElementById('content-stage');
       if (!drawer || !panel) return;
+      panel.classList.add('will-change-transform');
       drawer.classList.add('opacity-0');
       panel.classList.add('scale-[0.78]', 'blur-[10px]', 'opacity-0');
       if (depthStage) depthStage.classList.remove('depth-receded');
@@ -416,8 +430,10 @@ let sharedScrollVelocity = 0;
       setTimeout(() => {
         drawer.classList.remove('flex');
         drawer.classList.add('hidden');
+        panel.classList.remove('will-change-transform');
         if (activeDrawerId === targetId) activeDrawerId = null;
         isDrawerOpen = false;
+        if (windCanvas && !prefersReducedMotion) windCanvas.style.visibility = '';
         if (lenisInstance) lenisInstance.start();
         if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
           lastFocusedElement.focus({ preventScroll: true });
