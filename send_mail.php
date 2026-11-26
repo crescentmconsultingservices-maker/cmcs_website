@@ -237,6 +237,38 @@ try {
     $mail->Body = $htmlBody;
     $mail->AltBody = "New Inquiry from Crescent Moon Website\n\nName: $user_name\nEmail: $user_email\nSubject: $subject\n\nMessage:\n$message\n";
 
+    // Optional Resume File Attachment (PDF / DOC / DOCX, max 5MB)
+    if (isset($_FILES['resume']) && $_FILES['resume']['error'] !== UPLOAD_ERR_NO_FILE) {
+        if ($_FILES['resume']['error'] !== UPLOAD_ERR_OK) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Resume upload failed. Please try a smaller file (max 5MB).']);
+            exit;
+        }
+        if ($_FILES['resume']['size'] > 5 * 1024 * 1024) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Resume file exceeds the 5MB size limit.']);
+            exit;
+        }
+        $origName = basename($_FILES['resume']['name']);
+        $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+        $allowedExt = ['pdf', 'doc', 'docx'];
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($_FILES['resume']['tmp_name']);
+        $allowedMime = [
+            'application/pdf',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/octet-stream'
+        ];
+        if (!in_array($ext, $allowedExt, true) || !in_array($mime, $allowedMime, true)) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Invalid resume format. Only PDF, DOC, or DOCX files are allowed.']);
+            exit;
+        }
+        $safeFilename = preg_replace('/[^a-zA-Z0-9._-]/', '_', $origName);
+        $mail->addAttachment($_FILES['resume']['tmp_name'], $safeFilename);
+    }
+
     $mail->send();
 
     echo json_encode([

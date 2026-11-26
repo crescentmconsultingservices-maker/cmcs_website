@@ -32,22 +32,28 @@ const server = http.createServer((req, res) => {
   if (req.method === 'POST' && (reqPath === '/send_mail.php' || reqPath === '/api/contact')) {
     let body = '';
     req.on('data', chunk => {
-      body += chunk.toString();
-      if (body.length > 1e6) req.destroy(); // 1MB protection
+      body += chunk.toString('latin1');
+      if (body.length > 6e6) req.destroy(); // 6MB protection for 5MB resume uploads
     });
 
     req.on('end', () => {
       let data = {};
+      let resumeFilename = '';
       const contentType = req.headers['content-type'] || '';
 
       if (contentType.includes('application/json')) {
         try { data = JSON.parse(body); } catch (e) { data = {}; }
       } else if (contentType.includes('multipart/form-data')) {
-        // Simple multipart field extraction
+        // Simple multipart field + filename extraction
         const boundary = contentType.split('boundary=')[1];
         if (boundary) {
           const parts = body.split('--' + boundary);
           parts.forEach(part => {
+            const fileMatch = part.match(/name="([^"]+)";\s*filename="([^"]+)"/);
+            if (fileMatch) {
+              resumeFilename = fileMatch[2].trim();
+              return;
+            }
             const nameMatch = part.match(/name="([^"]+)"/);
             if (nameMatch) {
               const fieldName = nameMatch[1];
@@ -88,6 +94,7 @@ const server = http.createServer((req, res) => {
       console.log(`   From:    ${userName} <${userEmail}>`);
       console.log(`   Subject: ${subject}`);
       console.log(`   Message: ${message}`);
+      if (resumeFilename) console.log(`   Resume:  ${resumeFilename}`);
       console.log(`   Time:    ${new Date().toLocaleString()}`);
       console.log('======================================================\n');
 
