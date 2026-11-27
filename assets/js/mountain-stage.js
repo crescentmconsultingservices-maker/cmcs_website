@@ -1,5 +1,9 @@
 let sharedScrollVelocity = 0;
 let isDrawerOpen = false;
+let activeDrawerBody = null;
+let drawerTargetScroll = 0;
+let isDrawerScrollAnimating = false;
+let pendingMountainScroll = null;
 const prefersReducedMotionQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
 let prefersReducedMotion = prefersReducedMotionQuery ? prefersReducedMotionQuery.matches : false;
 if (prefersReducedMotionQuery && prefersReducedMotionQuery.addEventListener) {
@@ -64,12 +68,17 @@ function triggerTitleAnimation(idx) {
   const el = titles[idx];
   if (el) {
     el.style.animation = 'none';
-    void el.offsetHeight;
-    el.style.animation = '';
+    requestAnimationFrame(() => {
+      el.style.animation = '';
+    });
   }
 }
 
 window.scrollToMountain = function (idx) {
+  if (isDrawerOpen) {
+    pendingMountainScroll = idx;
+    return;
+  }
   if (typeof window.wakeMountainStage === 'function') window.wakeMountainStage();
   if (!prefersReducedMotion) {
     setTimeout(() => triggerTitleAnimation(idx), 200);
@@ -232,7 +241,21 @@ window.scrollToMountain = function (idx) {
     }
 
     if (isDrawerOpen) {
-      requestAnimationFrame(animate);
+      if (activeDrawerBody && isDrawerScrollAnimating && !prefersReducedMotion) {
+        const diff = drawerTargetScroll - activeDrawerBody.scrollTop;
+        if (Math.abs(diff) < 0.5) {
+          activeDrawerBody.scrollTop = drawerTargetScroll;
+          isDrawerScrollAnimating = false;
+        } else {
+          activeDrawerBody.scrollTop += diff * 0.14;
+        }
+      }
+      if (isDrawerScrollAnimating) {
+        stageRafId = requestAnimationFrame(animate);
+      } else {
+        isStageIdle = true;
+        stageRafId = null;
+      }
       return;
     }
 
@@ -242,7 +265,7 @@ window.scrollToMountain = function (idx) {
     sharedScrollVelocity = sharedScrollVelocity * 0.86 + deltaY * 0.015;
 
     const targetProgress = getTargetProgress(currentScrollY);
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || lenisInstance) {
       smoothStageProgress = targetProgress;
     } else {
       smoothStageProgress += (targetProgress - smoothStageProgress) * 0.14;
@@ -317,15 +340,17 @@ window.scrollToMountain = function (idx) {
         let cScale = 1.0;
 
         if (clampedDist <= 0) {
-          const enterT = 1 + clampedDist;
+          // Enter only in the second half (0.58 -> 1.0) so previous section exits first
+          const enterT = Math.max(0, (1 + clampedDist - 0.58) / 0.42);
           const qEnter = smootherstep(enterT);
-          cOpacity = Math.pow(qEnter, 1.25);
-          cScale = 0.92 + qEnter * 0.08;
+          cOpacity = Math.pow(qEnter, 1.15);
+          cScale = 0.94 + qEnter * 0.06;
         } else {
-          const exitT = clampedDist;
+          // Exit completely in the first half (0.0 -> 0.42) so two sections never overlap
+          const exitT = Math.min(1, clampedDist / 0.42);
           const qExit = smootherstep(exitT);
-          cOpacity = Math.max(0, 1 - Math.pow(qExit, 1.25));
-          cScale = 1.0 + qExit * 0.08;
+          cOpacity = Math.max(0, 1 - Math.pow(qExit, 1.15));
+          cScale = 1.0 + qExit * 0.06;
         }
 
         if (cOpacity > 0.001 || lastContentOpacity[i] !== 0) {
@@ -389,6 +414,15 @@ window.scrollToMountain = function (idx) {
   stageRafId = requestAnimationFrame(animate);
 })();
 
+// Pre-decode mountain stage images after initial load to avoid first-scroll decode hitches
+window.addEventListener('load', () => {
+  document.querySelectorAll('#depth-stage img').forEach((img) => {
+    if (typeof img.decode === 'function') {
+      img.decode().catch(() => {});
+    }
+  });
+}, { once: true });
+
 /**
  * 3. Shared 3D Z-Axis Depth Pull Drawer Controls (Story, Capabilities, Contact)
  */
@@ -422,15 +456,45 @@ window.openGlassDrawer = function (drawerId) {
   drawer.classList.remove('hidden');
   drawer.classList.add('flex');
   document.body.style.overflow = 'hidden';
+  const drawerBody = panel.querySelector('[data-drawer-body]');
+  activeDrawerBody = drawerBody || null;
+  drawerTargetScroll = 0;
+  isDrawerScrollAnimating = false;
+  if (drawerBody) {
+    drawerBody.scrollTop = 0;
+    if (!drawerBody.dataset.smoothWheelBound) {
+      drawerBody.dataset.smoothWheelBound = '1';
+      drawerBody.addEventListener('wheel', (e) => {
+        if (prefersReducedMotion || e.ctrlKey) return;
+        const maxScroll = Math.max(0, drawerBody.scrollHeight - drawerBody.clientHeight);
+        if (maxScroll <= 0) return;
+        e.preventDefault();
+        if (!isDrawerScrollAnimating) {
+          drawerTargetScroll = drawerBody.scrollTop;
+        }
+        drawerTargetScroll = Math.max(0, Math.min(maxScroll, drawerTargetScroll + e.deltaY * 1.05));
+        isDrawerScrollAnimating = true;
+        if (typeof window.wakeMountainStage === 'function') window.wakeMountainStage();
+      }, { passive: false });
+      drawerBody.addEventListener('scroll', () => {
+        if (!isDrawerScrollAnimating) {
+          drawerTargetScroll = drawerBody.scrollTop;
+        }
+      }, { passive: true });
+    }
+  }
   panel.scrollTop = 0;
   void drawer.offsetHeight; // Force clean reflow so CSS transition always animates smoothly
   requestAnimationFrame(() => {
-    drawer.classList.remove('opacity-0');
-    panel.classList.remove('scale-[0.78]', 'blur-[10px]', 'opacity-0');
-    const focusables = getFocusableElements(drawer);
-    if (focusables.length > 0) {
-      focusables[0].focus({ preventScroll: true });
-    }
+    requestAnimationFrame(() => {
+      if (activeDrawerId !== drawerId) return;
+      drawer.classList.remove('opacity-0');
+      panel.classList.remove('scale-[0.78]', 'opacity-0');
+      const focusables = getFocusableElements(drawer);
+      if (focusables.length > 0) {
+        focusables[0].focus({ preventScroll: true });
+      }
+    });
   });
   setTimeout(() => {
     if (activeDrawerId === drawerId) {
@@ -451,7 +515,7 @@ window.closeGlassDrawer = function (drawerId) {
   if (!drawer || !panel) return;
   panel.classList.add('will-change-transform');
   drawer.classList.add('opacity-0');
-  panel.classList.add('scale-[0.78]', 'blur-[10px]', 'opacity-0');
+  panel.classList.add('scale-[0.78]', 'opacity-0');
   if (depthStage) depthStage.classList.remove('depth-receded');
   if (header) header.style.opacity = '';
   if (stage) stage.style.opacity = '';
@@ -462,8 +526,16 @@ window.closeGlassDrawer = function (drawerId) {
     panel.classList.remove('will-change-transform');
     if (activeDrawerId === targetId) activeDrawerId = null;
     isDrawerOpen = false;
+    activeDrawerBody = null;
+    isDrawerScrollAnimating = false;
+    if (typeof window.wakeMountainStage === 'function') window.wakeMountainStage();
     if (windCanvas && !prefersReducedMotion) windCanvas.style.visibility = '';
     if (lenisInstance) lenisInstance.start();
+    if (pendingMountainScroll !== null) {
+      const targetIdx = pendingMountainScroll;
+      pendingMountainScroll = null;
+      window.scrollToMountain(targetIdx);
+    }
     if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
       lastFocusedElement.focus({ preventScroll: true });
       lastFocusedElement = null;
