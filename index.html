@@ -55,6 +55,7 @@
   <!-- Critical dark canvas + local stylesheets first (never block render on external CDNs) -->
   <style>html, body { background-color: #0B0E11; }</style>
   <link rel="preload" as="image" href="assets/img/logo.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/img/mountains/mountain-0.jpg" fetchpriority="high" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/mountain-stage.css" />
 
@@ -134,7 +135,7 @@
   <div id="depth-stage" aria-hidden="true">
     <!-- Mountain 01 (Section 1 / Home): Spruce Overlook & Braided Valley -->
     <div id="mountain-0" class="mountain-layer" style="z-index: 4; opacity: 1;">
-      <img src="assets/img/mountains/mountain-0.avif" fetchpriority="high" decoding="async" alt="" />
+      <img src="assets/img/mountains/mountain-0.jpg" fetchpriority="high" decoding="sync" alt="" />
       <!-- Soft dark gradient overlay for text readability -->
       <div class="absolute inset-0 bg-gradient-to-b from-[#0B1522]/60 via-transparent to-[#0B1522]/70"></div>
     </div>

@@ -1,3 +1,7 @@
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
 let sharedScrollVelocity = 0;
 let isDrawerOpen = false;
 let activeDrawerBody = null;
