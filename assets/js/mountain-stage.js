@@ -37,7 +37,10 @@ window.toggleMobileNav = function () {
     menu.classList.remove('hidden');
     menu.classList.add('flex');
     toggleBtn.setAttribute('aria-expanded', 'true');
-    if (icon) icon.textContent = 'close';
+    if (icon) {
+      const path = icon.querySelector('path');
+      if (path) path.setAttribute('d', 'M18 6 6 18M6 6l12 12');
+    }
   } else {
     window.closeMobileNav();
   }
@@ -51,7 +54,10 @@ window.closeMobileNav = function () {
   menu.classList.add('hidden');
   menu.classList.remove('flex');
   toggleBtn.setAttribute('aria-expanded', 'false');
-  if (icon) icon.textContent = 'menu';
+  if (icon) {
+    const path = icon.querySelector('path');
+    if (path) path.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+  }
 };
 
 /**

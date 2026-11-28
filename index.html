@@ -57,21 +57,12 @@
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/mountain-stage.css" />
 
-  <!-- Google Fonts: non-render-blocking; Material Symbols uses display=block to prevent raw text flash -->
+  <!-- Google Fonts: Playfair Display + Plus Jakarta Sans + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet"
+  <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    media="print" onload="this.media='all'" />
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
-    media="print" onload="this.media='all'" />
-  <noscript>
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" />
-  </noscript>
+    rel="stylesheet" />
 
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
 </head>
@@ -115,7 +106,7 @@
         <button type="button" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-expanded="false"
           aria-controls="mobile-nav-menu" aria-label="Toggle navigation menu"
           class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all cursor-pointer">
-          <span id="mobile-nav-icon" class="material-symbols-outlined text-[20px]">menu</span>
+          <svg id="mobile-nav-icon" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
 
@@ -203,12 +194,12 @@
           <button type="button" onclick="openContactDrawer(false)"
             class="h-12 px-8 rounded-full bg-white hover:bg-[#C59A3F] text-[#0F1C2D] font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2.5 shadow-[0_10px_35px_rgba(0,0,0,0.4)] hover:shadow-[#C59A3F]/30 hover:scale-105 transition-all duration-300 cursor-pointer">
             <span>Talk to Our Team</span>
-            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
           <a href="downloads/brochure.pdf" target="_blank"
             class="h-12 px-7 rounded-full bg-[#0F1C2D]/85 hover:bg-[#0F1C2D] border border-white/25 text-white hover:border-[#C59A3F] font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition-all duration-300 shadow-lg cursor-pointer">
             <span>Download Brochure</span>
-            <span class="material-symbols-outlined text-[18px]">download</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
           </a>
         </div>
       </div>
@@ -232,8 +223,7 @@
             <button type="button" onclick="openStoryDrawer()"
               class="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-white/15 hover:bg-[#C59A3F] text-white hover:text-[#0F1C2D] border border-white/25 hover:border-[#C59A3F] text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-xl group cursor-pointer">
               <span>Read full story</span>
-              <span
-                class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </div>
         </div>
@@ -258,8 +248,7 @@
             <button type="button" onclick="openGlassDrawer('capabilities-drawer')"
               class="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-white/15 hover:bg-[#C59A3F] text-white hover:text-[#0F1C2D] border border-white/25 hover:border-[#C59A3F] text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-xl group cursor-pointer">
               <span>Explore all 6 capabilities</span>
-              <span
-                class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </div>
         </div>
@@ -284,18 +273,17 @@
             <button type="button" onclick="openGlassDrawer('careers-drawer')"
               class="h-12 px-7 rounded-full bg-[#C59A3F] hover:bg-[#d8ab4d] text-[#0F1C2D] font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2.5 transition-all shadow-xl cursor-pointer group">
               <span>View Open Roles</span>
-              <span
-                class="material-symbols-outlined text-[17px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
             <button type="button" onclick="openContactDrawer(false)"
               class="h-12 px-7 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 text-white font-semibold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition-all shadow-xl cursor-pointer">
               <span>Send Email</span>
-              <span class="material-symbols-outlined text-[17px]">mail</span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             </button>
             <a href="tel:+917397178223"
               class="h-12 px-7 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 text-white font-semibold text-xs tracking-wide inline-flex items-center gap-2 transition-all shadow-xl">
               <span>+91 7397178223</span>
-              <span class="material-symbols-outlined text-[17px]">call</span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             </a>
           </div>
         </div>
@@ -363,7 +351,7 @@
         </div>
         <button type="button" onclick="closeStoryDrawer()" aria-label="Close story"
           class="w-10 h-10 rounded-full bg-white/10 hover:bg-[#C59A3F] text-white hover:text-[#0F1C2D] border border-white/20 flex items-center justify-center transition-all cursor-pointer">
-          <span class="material-symbols-outlined text-[20px]">close</span>
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
@@ -465,7 +453,7 @@
               <a href="https://www.linkedin.com/in/ravindran-padmanaban-41642127/" target="_blank" rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-[#C59A3F] text-white hover:text-[#0F1C2D] border border-white/20 text-xs font-bold transition-all">
                 <span>View LinkedIn profile</span>
-                <span class="material-symbols-outlined text-[15px]">north_east</span>
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
               </a>
             </div>
           </div>
@@ -504,7 +492,7 @@
           <button type="button" onclick="closeStoryDrawer(); scrollToMountain(3);"
             class="h-11 px-6 rounded-full bg-[#C59A3F] hover:bg-[#d8ab4d] text-[#0F1C2D] font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition-all cursor-pointer">
             <span>Work with us</span>
-            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
 
@@ -531,7 +519,7 @@
         </div>
         <button type="button" onclick="closeGlassDrawer('capabilities-drawer')" aria-label="Close capabilities"
           class="w-10 h-10 rounded-full bg-white/10 hover:bg-[#C59A3F] text-white hover:text-[#0F1C2D] border border-white/20 flex items-center justify-center transition-all cursor-pointer">
-          <span class="material-symbols-outlined text-[20px]">close</span>
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
@@ -659,8 +647,8 @@
               <div class="pt-1">
                 <a href="https://www.kanavuillam.in/" target="_blank" rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 text-white text-xs font-semibold transition-all duration-300">
-                  Visit Kanavu Illam <span class="material-symbols-outlined text-[15px]"
-                    aria-hidden="true">open_in_new</span>
+                  <span>Visit Kanavu Illam</span>
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
                 </a>
               </div>
             </div>
@@ -673,7 +661,7 @@
             onclick="closeGlassDrawer('capabilities-drawer'); setTimeout(() => scrollToMountain(3), 260);"
             class="h-11 px-6 rounded-full bg-[#C59A3F] hover:bg-[#d8ab4d] text-[#0F1C2D] font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition-all cursor-pointer">
             <span>Work with us</span>
-            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
       </div>
@@ -698,7 +686,7 @@
         </div>
         <button type="button" onclick="closeGlassDrawer('careers-drawer')" aria-label="Close open roles"
           class="w-10 h-10 rounded-full bg-white/10 hover:bg-[#C59A3F] text-white hover:text-[#0F1C2D] border border-white/20 flex items-center justify-center transition-all cursor-pointer">
-          <span class="material-symbols-outlined text-[20px]">close</span>
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
@@ -747,7 +735,7 @@
               <button type="button" onclick="applyForRole('Application - Software Developer (Java & Python)')"
                 class="h-10 px-5 rounded-full bg-[#C59A3F] hover:bg-[#d8ab4d] text-[#0F1C2D] font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition-all cursor-pointer">
                 <span>Apply Now</span>
-                <span class="material-symbols-outlined text-[16px]">send</span>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
               </button>
               <span class="text-xs text-slate-400">Immediate start</span>
             </div>
@@ -782,7 +770,7 @@
               <button type="button" onclick="applyForRole('Application - Mobile App Developer (Android & iOS)')"
                 class="h-10 px-5 rounded-full bg-[#C59A3F] hover:bg-[#d8ab4d] text-[#0F1C2D] font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition-all cursor-pointer">
                 <span>Apply Now</span>
-                <span class="material-symbols-outlined text-[16px]">send</span>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
               </button>
               <span class="text-xs text-slate-400">Immediate start</span>
             </div>
@@ -817,7 +805,7 @@
           <button type="button" onclick="applyForRole('General Engineering Inquiry')"
             class="shrink-0 h-10 px-6 rounded-full bg-white/15 hover:bg-[#C59A3F] text-white hover:text-[#0F1C2D] border border-white/25 font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition-all cursor-pointer">
             <span>Send Open Inquiry</span>
-            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
       </div>
@@ -838,7 +826,7 @@
         </div>
         <button type="button" onclick="closeGlassDrawer('contact-drawer')" aria-label="Close contact form"
           class="w-10 h-10 rounded-full bg-white/10 hover:bg-[#C59A3F] text-white hover:text-[#0F1C2D] border border-white/20 flex items-center justify-center transition-all cursor-pointer">
-          <span class="material-symbols-outlined text-[20px]">close</span>
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
 
@@ -879,7 +867,7 @@
               <label for="drawer-resume-file"
                 class="flex items-center justify-between gap-3 w-full px-4 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-dashed border-[#C59A3F]/50 text-xs sm:text-sm text-slate-200 cursor-pointer transition-colors">
                 <span class="inline-flex items-center gap-2.5 truncate">
-                  <span class="material-symbols-outlined text-[18px] text-[#C59A3F]">upload_file</span>
+                  <svg class="w-4 h-4 text-[#C59A3F]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 18v-6M9 15l3-3 3 3"/></svg>
                   <span id="drawer-resume-filename" class="truncate text-slate-300">Choose PDF or Word file...</span>
                 </span>
                 <span
@@ -914,19 +902,18 @@
             <button id="drawer-submit-btn" type="submit"
               class="h-10 px-6 rounded-full bg-[#C59A3F] hover:bg-[#d8ab4d] text-[#0F1C2D] font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2 transition-all shadow-xl cursor-pointer">
               <span id="drawer-submit-text">Send Message</span>
-              <span class="material-symbols-outlined text-[16px]">send</span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
             </button>
           </div>
           <div
             class="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-400">
             <div class="flex items-start gap-2">
-              <span class="material-symbols-outlined text-[15px] text-[#C59A3F] shrink-0 mt-0.5"
-                aria-hidden="true">location_on</span>
+              <svg class="w-4 h-4 text-[#C59A3F] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
               <span>Corporation Ward-32, 134-B, Sengodampalayam, Perundurai Rd (opposite Indian Public School), Thindal,
                 Erode, Tamil Nadu 638012</span>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
-              <span class="material-symbols-outlined text-[14px] text-[#C59A3F]" aria-hidden="true">schedule</span>
+              <svg class="w-3.5 h-3.5 text-[#C59A3F]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               <span>Mon-Fri, 9:30 AM - 6:30 PM</span>
             </div>
           </div>
