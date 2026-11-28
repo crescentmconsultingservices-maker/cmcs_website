@@ -55,12 +55,9 @@
   <!-- Critical dark canvas + local stylesheets first (never block render on external CDNs) -->
   <style>html, body { background-color: #0B0E11; }</style>
   <link rel="preload" as="image" href="assets/img/logo.jpg" fetchpriority="high" />
-  <link rel="preload" as="image" href="assets/img/mountains/mountain-0.jpg" fetchpriority="high" />
-  <link rel="preload" as="image" href="assets/img/mountains/mountain-1.jpg" fetchpriority="low" />
-  <link rel="preload" as="image" href="assets/img/mountains/mountain-2.jpg" fetchpriority="low" />
-  <link rel="preload" as="image" href="assets/img/mountains/mountain-3.jpg" fetchpriority="low" />
-  <link rel="stylesheet" href="assets/css/style.css?v=20261128b" />
-  <link rel="stylesheet" href="assets/css/mountain-stage.css?v=20261128b" />
+  <link rel="preload" as="image" href="assets/img/mountains/mountain-0.jpg?v=20261128c" fetchpriority="high" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20261128c" />
+  <link rel="stylesheet" href="assets/css/mountain-stage.css?v=20261128c" />
 
   <!-- Google Fonts: Playfair Display + Plus Jakarta Sans + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -137,8 +134,8 @@
   <!-- PINNED FULL-VIEWPORT 4-MOUNTAIN STAGE -->
   <div id="depth-stage" aria-hidden="true">
     <!-- Mountain 01 (Section 1 / Home): Spruce Overlook & Braided Valley -->
-    <div id="mountain-0" class="mountain-layer" style="z-index: 4; opacity: 1;">
-      <img src="assets/img/mountains/mountain-0.jpg" fetchpriority="high" decoding="sync" loading="eager" alt="" />
+    <div id="mountain-0" class="mountain-layer" style="z-index: 4; opacity: 1; background: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA8KCw0LCQ8NDA0REA8RFiUYFhQUFi0gIhslNS84NzQvNDM7QlVIOz9QPzM0SmRLUFdaX2BfOUdob2dcblVdX1v/2wBDARARERYTFisYGCtbPTQ9W1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1v/wAARCAAgADADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCtJpSblaNC6/xKW4HpzUsmlwmLatvskAzuLdayrXU7iS8KhlRCCMogx7VvaVrAUhL1i6ngSAdPqP61pFyeq6GTUdikNK/cq/lqRjB+bnPrimf2U+M7Dj1xXVSG3WMOrK27oVAahLyyiT9/gKwzn/61aKb7GTpruc9BA0ShXjHHAPp+HeplsIXxlivOchDj+dXZtWsi5W3hJ4yGfgVXvdXgI2wBjnHLE8fgKTi3siotJas4vSwBcI0rHDnqDjrXQSR6dAist/lxz8qFv61zWnMVPzKxA6NnpW3BbubgylgVcHIwQOnSuVVZU3obuCluWbe/jQO0E0gwejAKG+g5qC91QiNVWBSzDO8sSR+HSq+oAwyh8wlGBUL/ALXr04qjLIyypxlXAxg55A5FUq8ifZxJn1KUj0qKe+kO7cfu84zT7iINYrIFEYYcsx4JrP8AKku5wc4RiE3etP2vMCgkf//Z') center 46% / cover no-repeat;">
+      <img src="assets/img/mountains/mountain-0.jpg?v=20261128c" fetchpriority="high" decoding="sync" loading="eager" alt="" />
       <!-- Soft dark gradient overlay for text readability -->
       <div class="absolute inset-0 bg-gradient-to-b from-[#0B1522]/60 via-transparent to-[#0B1522]/70"></div>
     </div>
@@ -927,7 +924,7 @@
     </div>
   </div>
 
-  <script src="assets/js/mountain-stage.js?v=20261128b" defer></script>
+  <script src="assets/js/mountain-stage.js?v=20261128c" defer></script>
 </body>
 
 </html>
