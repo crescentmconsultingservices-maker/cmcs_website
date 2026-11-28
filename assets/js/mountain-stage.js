@@ -1,6 +1,8 @@
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
 }
+// Always start at top on page load / hard refresh
+window.scrollTo(0, 0);
 
 let sharedScrollVelocity = 0;
 let isDrawerOpen = false;
@@ -275,10 +277,10 @@ window.scrollToMountain = function (idx) {
     sharedScrollVelocity = sharedScrollVelocity * 0.86 + deltaY * 0.015;
 
     const targetProgress = getTargetProgress(currentScrollY);
-    if (prefersReducedMotion || lenisInstance) {
+    if (prefersReducedMotion) {
       smoothStageProgress = targetProgress;
     } else {
-      smoothStageProgress += (targetProgress - smoothStageProgress) * 0.14;
+      smoothStageProgress += (targetProgress - smoothStageProgress) * 0.12;
     }
 
     smoothMouseX += (mouseX - smoothMouseX) * 0.05;

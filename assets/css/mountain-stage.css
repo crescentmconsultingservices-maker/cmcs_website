@@ -126,7 +126,6 @@
       min-height: 115vh;
       min-height: 115dvh;
       width: 100%;
-      scroll-snap-align: center;
     }
 
     /* Ultra-luminous Liquid Glassmorphism Navbar */

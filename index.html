@@ -56,6 +56,9 @@
   <style>html, body { background-color: #0B0E11; }</style>
   <link rel="preload" as="image" href="assets/img/logo.jpg" fetchpriority="high" />
   <link rel="preload" as="image" href="assets/img/mountains/mountain-0.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/img/mountains/mountain-1.jpg" fetchpriority="low" />
+  <link rel="preload" as="image" href="assets/img/mountains/mountain-2.jpg" fetchpriority="low" />
+  <link rel="preload" as="image" href="assets/img/mountains/mountain-3.jpg" fetchpriority="low" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="stylesheet" href="assets/css/mountain-stage.css" />
 
@@ -135,26 +138,26 @@
   <div id="depth-stage" aria-hidden="true">
     <!-- Mountain 01 (Section 1 / Home): Spruce Overlook & Braided Valley -->
     <div id="mountain-0" class="mountain-layer" style="z-index: 4; opacity: 1;">
-      <img src="assets/img/mountains/mountain-0.jpg" fetchpriority="high" decoding="sync" alt="" />
+      <img src="assets/img/mountains/mountain-0.jpg" fetchpriority="high" decoding="sync" loading="eager" alt="" />
       <!-- Soft dark gradient overlay for text readability -->
       <div class="absolute inset-0 bg-gradient-to-b from-[#0B1522]/60 via-transparent to-[#0B1522]/70"></div>
     </div>
 
     <!-- Mountain 02 (Section 2 - Who We Are): Opposite Ridge & Snow-Capped Alpine Range -->
     <div id="mountain-1" class="mountain-layer" style="z-index: 3; opacity: 0;">
-      <img src="assets/img/mountains/mountain-1.jpg" decoding="async" alt="" />
+      <img src="assets/img/mountains/mountain-1.jpg" decoding="sync" loading="eager" alt="" />
       <div class="absolute inset-0 bg-gradient-to-b from-[#0B1522]/50 via-transparent to-[#0B1522]/70"></div>
     </div>
 
     <!-- Mountain 03 (Section 3 - What We Can Do): Winding Valley Road & Jagged Basalt Peak -->
     <div id="mountain-2" class="mountain-layer" style="z-index: 2; opacity: 0;">
-      <img src="assets/img/mountains/mountain-2.jpg" decoding="async" alt="" />
+      <img src="assets/img/mountains/mountain-2.jpg" decoding="sync" loading="eager" alt="" />
       <div class="absolute inset-0 bg-gradient-to-b from-[#0B1522]/50 via-transparent to-[#0B1522]/70"></div>
     </div>
 
     <!-- Mountain 04 (Section 4): Deep Glacial Corridor & Spruce Pass -->
     <div id="mountain-3" class="mountain-layer" style="z-index: 1; opacity: 0;">
-      <img src="assets/img/mountains/mountain-3.jpg" decoding="async" alt="" />
+      <img src="assets/img/mountains/mountain-3.jpg" decoding="sync" loading="eager" alt="" />
       <div class="absolute inset-0 bg-gradient-to-b from-[#0B1522]/50 via-transparent to-[#0B1522]/80"></div>
     </div>
 
