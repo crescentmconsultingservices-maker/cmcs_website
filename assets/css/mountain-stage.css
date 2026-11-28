@@ -54,7 +54,6 @@
       width: 106%;
       height: 106%;
       transform-origin: center center;
-      will-change: transform, opacity;
       pointer-events: none;
       background: linear-gradient(180deg, #4b82b8 0%, #9dc1e0 48%, #1d2b1f 100%);
     }
@@ -65,7 +64,6 @@
       object-fit: cover;
       object-position: center 46%;
       display: block;
-      image-rendering: high-quality;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
       user-select: none;
@@ -92,7 +90,6 @@
       height: 124%;
       pointer-events: none;
       transform-origin: center center;
-      will-change: transform, opacity;
       z-index: 5;
     }
 

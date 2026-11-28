@@ -326,10 +326,17 @@ window.scrollToMountain = function (idx) {
       }
 
       if (opacity > 0.001 || lastLayerOpacity[i] !== 0) {
-        layer.style.opacity = opacity.toFixed(4);
-        lastLayerOpacity[i] = opacity > 0.001 ? opacity : 0;
         if (opacity > 0.001) {
+          layer.style.visibility = 'visible';
+          layer.style.willChange = 'transform, opacity';
+          layer.style.opacity = opacity.toFixed(4);
           layer.style.transform = `translate3d(${(swayX + routeX).toFixed(3)}%, ${(swayY + routeY).toFixed(3)}%, 0) scale(${depthScale.toFixed(4)})`;
+          lastLayerOpacity[i] = opacity;
+        } else {
+          layer.style.opacity = '0';
+          layer.style.visibility = 'hidden';
+          layer.style.willChange = 'auto';
+          lastLayerOpacity[i] = 0;
         }
       }
 
